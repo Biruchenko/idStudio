@@ -1,0 +1,49 @@
+// Заголовки, загальні БЕМ блоки та інше...
+// Title
+.title {
+	font-family: "BN Chester Pro";
+	font-size: rem(40);
+	@include adaptiveValue("font-size", 40, 32);
+	line-height: math.div(41, 40);
+	letter-spacing: 0.005em;
+	span {
+		color: var(--secondary);
+	}
+}
+//======================================================================================
+// Text
+.text {
+	line-height: math.div(27, 16);
+}
+//======================================================================================
+// Footer-title
+
+.footer-title {
+	font-weight: 600;
+	line-height: math.div(20, 16);
+	text-transform: uppercase;
+	&:not(:last-child) {
+		@include adaptiveValue("margin-bottom", 24, 15);
+	}
+}
+//======================================================================================
+// Social
+
+.social {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	gap: rem(12);
+	max-width: rem(100);
+	// .social__item
+	&__item {
+		width: rem(20);
+		height: rem(20);
+		transition: opacity 0.3s ease 0s;
+		@media (any-hover: hover) {
+			&:hover {
+				opacity: 0.7;
+			}
+		}
+	}
+}

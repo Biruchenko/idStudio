@@ -1,0 +1,226 @@
+//====================================================================================================
+.header {
+	position: fixed;
+	top: 0;
+	left: 0;
+	width: 100%;
+	z-index: 50;
+	&._header-scroll {
+		padding-top: rem(10);
+		padding-bottom: rem(10);
+		background-color: rgba(255, 255, 255, 1);
+		top: -100%;
+	}
+	&._header-show {
+		transition: top 1.5s ease 0s;
+		top: 0;
+	}
+	// .header__container
+	&__container {
+		display: flex;
+		align-items: center;
+		@include adaptiveValue("gap", 68, 20);
+		min-height: rem(100);
+		@media (max-width: $tablet) {
+			min-height: rem(80);
+		}
+		@media (max-width: $mobile) {
+			min-height: rem(60);
+		}
+		padding-top: rem(5);
+		padding-bottom: rem(5);
+	}
+	// .header__logo
+	&__logo {
+		position: relative;
+		z-index: 5;
+		img {
+			max-width: 100%;
+		}
+	}
+	// .header__menu
+	&__menu {
+		flex: 1 1 auto;
+	}
+	// .header__actions
+	&__actions {
+		position: relative;
+		z-index: 5;
+		display: flex;
+		flex-wrap: wrap;
+		align-items: center;
+		@include adaptiveValue("gap", 45, 15);
+	}
+	// .header__phone
+	&__phone {
+		font-weight: 500;
+		line-height: math.div(19, 16);
+		transition: color 0.3s ease 0s;
+		@media (any-hover: hover) {
+			&:hover {
+				color: var(--secondary);
+			}
+		}
+		@media (max-width: $mobile) {
+			font-size: rem(25);
+		}
+	}
+	// .header__languages
+	&__languages {
+		font-family: "Gilroy";
+		font-weight: 500;
+		font-size: rem(16);
+		line-height: math.div(19, 16);
+		background-color: transparent;
+		color: var(--primary);
+		text-transform: uppercase;
+		cursor: pointer;
+		& option {
+			cursor: pointer;
+			background-color: #f3e306;
+			color: blue;
+		}
+	}
+}
+
+.menu {
+	// .menu__body
+	&__body {
+		@media (max-width: $mobile) {
+			position: fixed;
+			width: 100%;
+			height: 100%;
+			top: 0;
+			left: -100%;
+			overflow: auto;
+			background-color: #fff;
+			display: flex;
+			flex-direction: column;
+			align-items: center;
+			gap: rem(30);
+			transition: all 0.3s ease 0s;
+			@include adaptiveValue("padding-top", 180, 120);
+			padding-left: rem(15);
+			padding-right: rem(15);
+			padding-bottom: rem(30);
+			&::before {
+				content: "";
+				position: fixed;
+				top: 0;
+				left: -100%;
+				width: 100%;
+				height: rem(100);
+				@include adaptiveValue("height", 100, 60);
+				background-color: #f3e8e8;
+				z-index: 2;
+			}
+			.menu-open & {
+				left: 0;
+				&::before {
+					left: 0;
+				}
+			}
+		}
+	}
+	// .menu__list
+	&__list {
+		display: flex;
+		flex-wrap: wrap;
+		@include adaptiveValue("gap", 48, 20);
+		align-self: flex-start;
+		@media (max-width: $mobile) {
+			flex-direction: column;
+			align-self: center;
+			row-gap: rem(30);
+			text-align: center;
+		}
+	}
+	// .menu__item
+	&__item {
+	}
+	// .menu__link
+	&__link {
+		font-weight: 500;
+		line-height: math.div(19, 16);
+		color: #352c2c;
+		transition: color 0.3s ease 0s;
+		@media (any-hover: hover) {
+			&:hover {
+				color: var(--secondary);
+			}
+		}
+		@media (max-width: $mobile) {
+			font-size: rem(25);
+		}
+	}
+	// .menu__icon
+	&__icon {
+	}
+}
+.change-lang {
+}
+//====================================================================================================
+
+//Burger
+
+.icon-menu {
+	display: none;
+	@media (max-width: $mobile) {
+		display: block;
+		position: relative;
+		width: rem(30);
+		height: rem(18);
+		z-index: 5;
+		@media (any-hover: none) {
+			cursor: default;
+		}
+		span,
+		&::before,
+		&::after {
+			content: "";
+			transition: all 0.3s ease 0s;
+			right: 0;
+			position: absolute;
+			// width: 100%;
+			height: rem(2);
+			background-color: #000;
+		}
+		span {
+			width: 100%;
+		}
+		&::before {
+			width: rem(18);
+		}
+		&::after {
+			width: rem(18);
+			left: 0;
+		}
+		&::before {
+			top: 0;
+		}
+		&::after {
+			bottom: 0;
+		}
+		span {
+			top: calc(50% - rem(1));
+		}
+		.menu-open & {
+			span {
+				width: 0;
+			}
+			&::before,
+			&::after {
+			}
+			&::before {
+				width: 100%;
+				top: calc(50% - rem(1));
+				transform: rotate(-45deg);
+			}
+			&::after {
+				width: 100%;
+				bottom: calc(50% - rem(1));
+				transform: rotate(45deg);
+			}
+		}
+	}
+}

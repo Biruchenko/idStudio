@@ -1,0 +1,733 @@
+@use "sass:math";
+
+// Підключення міксинів ===========================================================================================================================================================================================================================================================================
+@import "base/mixins";
+
+// Підключення шрифтів ===========================================================================================================================================================================================================================================================================
+//&display=swap - додати при підключенні через плагін
+
+// Підключити, якщо є локальні файли шрифтів
+@import "fonts/fonts";
+
+// Підключення іконкових шрифтів ==============================================================================================================================================================================================================================================================================
+// Підключити, якщо є файл іконкового шрифту
+//@import "fonts/icons";
+
+// ============================================================================================================================================================================================================================================================================================================================================================================================
+// Налаштування шаблону ============================================================================================================================================================================================================================================================================================================================================================================================
+// ============================================================================================================================================================================================================================================================================================================================================================================================
+
+// За замовчуванням шрифт ==============================================================================================================================================================================================================================================================================
+$fontFamily: "Gilroy";
+$fontSize: rem(16); // де 14(px) - розмір шрифту за замовчуванням з макету
+
+// Основні кольори
+$mainColor: var(--primary); // Колір шрифту за замовчуванням
+
+// Палітра кольорів
+@import "base/colors-palette";
+
+// Налаштування адаптивної сітки ===============================================================================================================================================================================================================================================================================================
+
+// Мінімальна ширина сторінки
+$minWidth: 320;
+// Ширина полотна (макету)
+$maxWidth: 1440;
+// Ширина обмежуючого контейнера (0 = немає обмеження)
+$maxWidthContainer: 1170;
+// Загальний відступ у контейнера
+// (30 = по 15px ліворуч і праворуч, 0 = немає відступу)
+$containerPadding: 30;
+
+// Ширина спрацьовування першого брейкпоінту
+$containerWidth: $maxWidthContainer + $containerPadding;
+
+// Брейк-поїнти
+$pc: em($containerWidth); // ПК, ноутбуки, деякі планшети у горизонтальному положенні
+$tablet: em(991.98); // Планшети, деякі телефони в горизонтальному положенні
+$mobile: em(767.98); // Телефони L
+$mobileSmall: em(479.98); // Телефони S
+
+// Тип адаптива:
+// 1 = чуйність (у контейнера немає брейкпоінтів),
+// 2 = по брейк-поїнт (контейнер змінює свою ширину по брейк-поїнт)
+$responsiveType: 1;
+
+// ============================================================================================================================================================================================================================================================================================================================================================================================
+// ============================================================================================================================================================================================================================================================================================================================================================================================
+
+// Обнулення ============================================================================================================================================================================================== =============================================================================================== ===============================================================================================
+@import "base/null";
+
+// Стилі тега BODY ============================================================================================================================================================================================================================================================================================================================================================================================
+body {
+	// Скролл заблоковано
+	.lock & {
+		overflow: hidden;
+		touch-action: none;
+		overscroll-behavior: none;
+	}
+	// Сайт завантажений
+	.loaded & {
+	}
+}
+// Оболонка wrapper ============================================================================================================================================================================================================================================================================================================================================================================================================================================
+.wrapper {
+	min-height: 100%;
+	display: flex;
+	flex-direction: column;
+	overflow: hidden;
+	@supports (overflow: clip) {
+		overflow: clip;
+	}
+	// Притискаємо footer
+	> main {
+		flex: 1 1 auto;
+	}
+	// Фікс для слайдерів
+	> * {
+		min-width: 0;
+	}
+}
+// Обмежуючий контейнер ======================================================================================================================================================================================================================
+/*
+(i) Стилі будуть застосовуватись до
+всіх класів, що містять *__container
+Наприклад header__container, main__container і т.п.
+Сніппет (HTML): cnt
+*/
+@if ($responsiveType==1) {
+	// Чуйна
+	[class*="__container"] {
+		@if ($maxWidthContainer>0) {
+			max-width: rem($containerWidth);
+			margin: 0 auto;
+		}
+		@if ($containerPadding>0) {
+			@if ($maxWidthContainer>0) {
+				padding: 0 rem(math.div($containerPadding, 2));
+			} @else {
+				@include adaptiveValue("padding-left", math.div($containerPadding, 2), 15);
+				@include adaptiveValue("padding-right", math.div($containerPadding, 2), 15);
+			}
+		}
+	}
+} @else {
+	// Брейк-поїнтами
+	[class*="__container"] {
+		margin: 0 auto;
+		@if ($maxWidthContainer>0) {
+			max-width: rem($containerWidth);
+		} @else {
+			@if ($containerPadding>0) {
+				padding: 0 rem(math.div($containerPadding, 2));
+			}
+		}
+		@media (max-width: $pc) {
+			max-width: rem(970);
+		}
+		@media (max-width: $tablet) {
+			max-width: rem(750);
+		}
+		@media (max-width: $mobile) {
+			max-width: none;
+			@if ($containerPadding>0 and $maxWidthContainer>0) {
+				padding: 0 rem(math.div($containerPadding, 2));
+			}
+		}
+	}
+}
+
+// Підключення базових стилів, шаблонів (заготівель) та допоміжних класів
+// Для підключення/вимкнення конкретних стилів дивись base.scss
+@import "base";
+
+// Підключення стилів загальних елементів проекту
+@import "common";
+
+// Підключення стилів окремих блоків
+@import "header";
+@import "footer";
+
+// Підключення стилів окремих сторінок
+@import "home";
+//======================================================================================
+// Pages
+.page {
+	// .page__main
+	&__main {
+	}
+	// .page__about
+	&__about {
+	}
+	// .page__services
+	&__services {
+	}
+	// .page__portfolio
+	&__portfolio {
+	}
+	// .page__pricing
+	&__pricing {
+	}
+	// .page__testimonials
+	&__testimonials {
+	}
+	// .page__consultation
+	&__consultation {
+	}
+}
+//======================================================================================
+// Main
+.main {
+	overflow: hidden;
+	@media (min-width: $mobile) {
+		display: flex;
+	}
+	// .main__content
+	&__content {
+		flex: 0 0 100%;
+		@media (min-width: $mobile) {
+			align-self: center;
+		}
+	}
+	// .main__container
+	&__container {
+	}
+	// .main__body
+	&__body {
+		@include adaptiveValue("padding-top", 200, 120);
+		@include adaptiveValue("padding-bottom", 200, 30);
+		@media (min-width: $mobile) {
+			width: 50%;
+			padding-right: rem(30);
+		}
+	}
+	// .main__title
+	&__title {
+		font-family: "BN Chester Pro";
+		@include adaptiveValue("font-size", 66, 40);
+		line-height: math.div(64, 66);
+		letter-spacing: 0.01em;
+		color: #3d3737;
+		&:not(:last-child) {
+			@include adaptiveValue("margin-bottom", 30, 15);
+		}
+	}
+	// .main__text
+	&__text {
+		max-width: rem(382);
+		&:not(:last-child) {
+			@include adaptiveValue("margin-bottom", 54, 25);
+		}
+	}
+	// .main__button
+	&__button {
+		@media (max-width: $mobile) {
+			width: 100%;
+		}
+	}
+	// .main__image
+	&__image-ibg {
+		padding-bottom: 52.1%;
+		// img {
+		// 	max-width: 100%;
+		// }
+		@media (min-width: $mobile) {
+			flex: 0 0 50%;
+			transform: translate(-100%, 0px);
+		}
+	}
+}
+//======================================================================================
+// About
+.about {
+	background-color: #f4f4f4;
+	@include adaptiveValue("padding-top", 71, 30);
+	@include adaptiveValue("padding-bottom", 71, 30);
+	// .about__container
+	&__container {
+		@media (min-width: $mobile) {
+			display: flex;
+			align-items: center;
+			justify-content: space-between;
+			gap: rem(15);
+		}
+	}
+	// .about__title
+	&__title {
+		flex: 0 0 percent(118, 1170);
+		@media (max-width: $mobile) {
+			// max-width: rem(118);
+			text-align: center;
+			&:not(:last-child) {
+				@include adaptiveValue("margin-bottom", 28, 20);
+			}
+		}
+	}
+	// .about__text
+	&__text {
+		flex: 0 0 percent(570, 1170);
+		p {
+			&:not(:last-child) {
+				margin-bottom: rem(15);
+			}
+		}
+	}
+}
+//======================================================================================
+// Services
+.services {
+	@include adaptiveValue("padding-top", 80, 30);
+	@include adaptiveValue("padding-bottom", 80, 30);
+	// .services__container
+	&__container {
+		display: flex;
+		flex-direction: column;
+		// align-items: center;
+		@include adaptiveValue("gap", 84, 30);
+	}
+	// .services__title
+	&__title {
+		align-self: center;
+	}
+	// .services__content
+	&__content {
+	}
+	// .services__items
+	&__items {
+		display: grid;
+		grid-template-columns: repeat(auto-fill, minmax(rem(270), 1fr));
+		@include adaptiveValue("column-gap", 30, 15);
+		row-gap: rem(20);
+		&._active .item-services {
+			@for $i from 1 through 4 {
+				$delay: $i * 0.3;
+				&:nth-child(#{$i}) {
+					transition-delay: #{$delay}s;
+				}
+			}
+			opacity: 1;
+		}
+	}
+	// .services__item
+	&__item {
+	}
+	// .services__button
+	&__button {
+		align-self: center;
+		// opacity: 0;
+		// transition: opacity 1s;
+		// transition-delay: 0s;
+		transform: translate(0px, 120%);
+		opacity: 0;
+		transition: all 0.8s ease 0s;
+		&._active {
+			// opacity: 1;
+			// transition-delay: 1.2s;
+			transform: translate(0px, 0px);
+			opacity: 1;
+			transition: all 0.8s ease 0.4s;
+		}
+	}
+}
+
+.item-services {
+	text-align: center;
+	opacity: 0;
+	transition: opacity 1s;
+	transition-delay: 0s;
+	// display: flex;
+	// flex-direction: column;
+	// @media (max-width: em(589.98)) {
+	// 	@include adaptiveValue("padding-bottom", 52, 15);
+	// 	border-bottom: rem(1) solid #dcd1bb;
+	// }
+	// .item-services__icon
+	&__icon {
+		img {
+			width: rem(90);
+			height: rem(90);
+		}
+		&:not(:last-child) {
+			@include adaptiveValue("margin-bottom", 42, 20);
+		}
+	}
+	// .item-services__body
+	&__body {
+		// flex: 1 1 auto;
+	}
+	// .item-services__title
+	&__title {
+		font-weight: 600;
+		font-size: rem(18);
+		line-height: math.div(22, 18);
+		text-transform: uppercase;
+		&:not(:last-child) {
+			margin-bottom: rem(15);
+		}
+	}
+	// .item-services__text
+	&__text {
+		color: #8d8d8d;
+	}
+}
+//======================================================================================
+// Portfolio
+.portfolio {
+	background-color: #f4f4f4;
+	@include adaptiveValue("padding-top", 80, 30);
+	@include adaptiveValue("padding-bottom", 80, 30);
+	// .portfolio__container
+	&__container {
+	}
+	// .portfolio__content
+	&__content {
+		display: flex;
+		flex-direction: column;
+		@include adaptiveValue("row-gap", 84, 30);
+	}
+	// .portfolio__title
+	&__title {
+		text-align: center;
+	}
+	// .portfolio__tabs
+	&__tabs {
+	}
+}
+.tabs-portfolio {
+	// .tabs-portfolio__header
+	&__header {
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
+		gap: rem(15);
+		&:not(:last-child) {
+			@include adaptiveValue("margin-bottom", 29, 15);
+		}
+	}
+	// .tabs-portfolio__navigation
+	&__navigation {
+		display: flex;
+		align-items: center;
+		@include adaptiveValue("gap", 59, 15);
+	}
+	// .tabs-portfolio__title
+	&__title {
+		@include adaptiveValue("font-size", 16, 12, 0, 767.98, 320);
+		line-height: math.div(19, 16);
+		text-transform: uppercase;
+		transition: color 0.3s ease 0s;
+		&._tab-active {
+			color: var(--secondary);
+		}
+	}
+	// .tabs-portfolio__link
+	&__link {
+		font-size: rem(16);
+		line-height: math.div(20, 16);
+		text-decoration: underline;
+		text-transform: uppercase;
+		transition: color 0.3s ease 0s;
+		@media (any-hover: hover) {
+			&:hover {
+				color: var(--secondary);
+			}
+		}
+		@media (max-width: $mobile) {
+			text-align: center;
+		}
+	}
+	// .tabs-portfolio__content
+	&__content {
+	}
+	// .tabs-portfolio__body
+	&__body {
+	}
+	// .tabs-portfolio__items
+	&__items {
+		@media (min-width: $mobile) {
+			display: grid;
+			grid-template-columns: repeat(auto-fit, minmax(rem(270), 1fr));
+			@include adaptiveValue("column-gap", 30, 15);
+			row-gap: rem(20);
+		}
+	}
+	// .tabs-portfolio__item
+	&__item-ibg {
+		padding-bottom: percent(320, 270);
+		img {
+			border-radius: rem(10);
+			// object-position: bottom center;
+		}
+		@media (max-width: $mobile) {
+			// width: 100%;
+			margin: 0 rem(-15);
+			padding-left: rem(15);
+			padding-right: rem(15);
+			padding-bottom: percent(290, 400);
+			&:not(:last-child) {
+				margin-bottom: rem(20);
+			}
+			img {
+				border-radius: rem(0);
+			}
+		}
+	}
+}
+//======================================================================================
+// Pricing
+.pricing {
+	@include adaptiveValue("padding-top", 102, 30);
+	@include adaptiveValue("padding-bottom", 102, 30);
+	// .pricing__container
+	&__container {
+	}
+	// .pricing__title
+	&__title {
+		text-align: center;
+		&:not(:last-child) {
+			@include adaptiveValue("margin-bottom", 70, 25);
+		}
+	}
+	// .pricing__items
+	&__items {
+		@media (min-width: $mobileSmall) {
+			display: flex;
+			flex-wrap: wrap;
+			justify-content: space-around;
+			@include adaptiveValue("gap", 82, 20);
+		}
+	}
+	// .pricing__item
+	&__item {
+	}
+}
+
+.item-pricing {
+	display: flex;
+	flex-direction: column;
+	@include adaptiveValue("padding-top", 32, 15);
+	@include adaptiveValue("padding-bottom", 32, 15);
+	@include adaptiveValue("padding-right", 38, 20);
+	@include adaptiveValue("padding-left", 38, 20);
+	@media (max-width: $mobileSmall) {
+		width: 100%;
+		&:not(:last-child) {
+			margin-bottom: rem(20);
+		}
+	}
+	text-align: center;
+	border: rem(2) solid var(--secondary);
+	border-radius: rem(10);
+	background-color: #fdfbf8;
+	transition: all 0.3s ease 0s;
+	@media (any-hover: hover) {
+		&:hover {
+			background-color: var(--secondary);
+			color: #fff;
+		}
+		&:hover .item-pricing__button {
+			border: rem(2) solid #fff;
+			background-color: #fff;
+			color: var(--primary);
+		}
+	}
+	// .item-pricing__header
+	&__header {
+		@include adaptiveValue("padding-bottom", 27, 20);
+		border-bottom: rem(1) solid #dcd1bb;
+	}
+	// .item-pricing__title
+	&__title {
+		font-family: "BN Chester Pro";
+		@include adaptiveValue("font-size", 24, 20);
+		line-height: math.div(23, 24);
+		text-transform: capitalize;
+		&:not(:last-child) {
+			@include adaptiveValue("margin-bottom", 31, 15);
+		}
+	}
+	// .item-pricing__price
+	&__price {
+		font-family: "BN Chester Pro";
+		@include adaptiveValue("font-size", 44, 28);
+		&:not(:last-child) {
+			margin-bottom: rem(7);
+		}
+	}
+	// .item-pricing__label
+	&__label {
+		font-family: "BN Chester Pro";
+		@include adaptiveValue("font-size", 18, 16);
+	}
+	// .item-pricing__body
+	&__body {
+		flex: 1 1 auto;
+		@include adaptiveValue("padding-top", 27, 20);
+		&:not(:last-child) {
+			@include adaptiveValue("margin-bottom", 54, 15);
+		}
+	}
+	// .item-pricing__list
+	&__list {
+		// flex: 1 1 auto;
+	}
+	// .item-pricing__text
+	&__text {
+		font-weight: 500;
+		font-size: rem(15);
+		line-height: math.div(27, 15);
+		text-transform: capitalize;
+		&:not(:last-child) {
+			margin-bottom: rem(5);
+		}
+	}
+	// .item-pricing__button
+	&__button {
+		// transition: all 0.3s ease 0s;
+		// @media (any-hover: hover) {
+		// 	&:hover {
+		// 		border: rem(2) solid #fff;
+		// 		background-color: #fff;
+		// 		color: var(--primary);
+		// 	}
+		// }
+	}
+}
+//======================================================================================
+// Testimonials
+.testimonials {
+	background-color: #f4f4f4;
+	@include adaptiveValue("padding-top", 59, 30);
+	@include adaptiveValue("padding-bottom", 59, 30);
+	// .testimonials__container
+	&__container {
+	}
+	// .testimonials__title
+	&__title {
+		text-align: center;
+		&:not(:last-child) {
+			@include adaptiveValue("margin-bottom", 87, 20);
+		}
+	}
+	// .testimonials__slider
+	&__slider {
+		padding-bottom: rem(42);
+		& .swiper-pagination {
+			bottom: 0;
+		}
+		& .swiper-pagination-bullet {
+			width: rem(13);
+			height: rem(13);
+			background: url("@img/testimonials/point.svg") center center no-repeat;
+			fill: #a16767;
+		}
+		& .swiper-pagination-bullet-active {
+			width: rem(13);
+			height: rem(13);
+			background: url("@img/testimonials/active-point.svg") center center no-repeat;
+		}
+	}
+	// .testimonials__wrapper
+	&__wrapper {
+	}
+	// .testimonials__slide
+	&__slide {
+	}
+}
+.slide-testimonials {
+	// .slide-testimonials__item
+	&__item {
+		@include adaptiveValue("padding-top", 36, 15);
+		@include adaptiveValue("padding-bottom", 36, 15);
+		@include adaptiveValue("padding-left", 91, 15);
+		@include adaptiveValue("padding-right", 43, 15);
+		background-color: #fff;
+		border-radius: rem(10);
+		display: flex;
+		flex-direction: column;
+		height: 100%;
+		@include adaptiveValue("gap", 30, 20);
+	}
+	// .slide-testimonials__author
+	&__author {
+	}
+	// .slide-testimonials__text
+	&__text {
+		@include adaptiveValue("font-size", 16, 14);
+		flex: 1 1 auto;
+	}
+}
+.author {
+	display: flex;
+	align-items: center;
+	@include adaptiveValue("column-gap", 35, 15);
+	row-gap: rem(20);
+	@media (max-width: $mobileSmall) {
+		flex-direction: column;
+		justify-content: center;
+	}
+	// .author__avatar
+	&__avatar {
+		flex: 0 0 percent(160, 420);
+		overflow: hidden;
+		img {
+			// @include adaptiveValue("width", 172, 129);
+			// @include adaptiveValue("height", 172, 129);
+			border-radius: 50%;
+			max-width: 100%;
+		}
+	}
+	// .author__info
+	&__info {
+		display: flex;
+		flex-direction: column;
+		@media (max-width: $mobileSmall) {
+			justify-content: center;
+			align-items: center;
+		}
+		font-weight: 500;
+		font-size: rem(20);
+		@include adaptiveValue("font-size", 20, 18);
+		line-height: math.div(24, 20);
+		// text-transform: capitalize;
+	}
+	// .author__name
+	&__name {
+		&:not(:last-child) {
+			margin-bottom: em(7, 16);
+		}
+	}
+	// .author__profession
+	&__profession {
+		color: #b5b5b5;
+		&:not(:last-child) {
+			@include adaptiveValue("margin-bottom", 38, 20);
+		}
+	}
+	// .author__social
+	&__social {
+	}
+}
+//======================================================================================
+// Consultation
+.consultation {
+	@include adaptiveValue("padding-top", 73, 30);
+	@include adaptiveValue("padding-bottom", 73, 30);
+	// .consultation__container
+	&__container {
+		display: flex;
+		flex-wrap: wrap;
+		align-items: center;
+		justify-content: space-around;
+		gap: rem(20);
+	}
+	// .consultation__title
+	&__title {
+		text-align: center;
+		max-width: rem(256);
+	}
+	// .consultation__button
+	&__button {
+	}
+}
